@@ -1,7 +1,3 @@
-//
-// Created by Covald on 18.04.2024.
-//
-
 #include <iostream>
 #include <sstream>
 #include <string>

@@ -72,7 +72,6 @@ TEST(Base, EmptyStreamsVectorTest) {
 
 TEST(SingleStream, FilledTest) {
     std::string in_s_1("first row\nsecond row\nthird row\n");
-    std::string correct_row("first row\nsecond row\nthird row\n");
 
     std::vector<std::unique_ptr<std::istream>> streams;
     streams.emplace_back(std::make_unique<std::istringstream>(in_s_1));
@@ -82,12 +81,11 @@ TEST(SingleStream, FilledTest) {
     std::ostringstream out;
     StreamMerger::merge(streams, out);
 
-    EXPECT_EQ(out.str(), correct_row);
+    EXPECT_EQ(out.str(), in_s_1);
 }
 
 TEST(SingleStream, EmptyTest) {
     std::string in_s_1;
-    std::string correct_row;
 
     std::vector<std::unique_ptr<std::istream>> streams;
     streams.emplace_back(std::make_unique<std::istringstream>(in_s_1));
@@ -97,7 +95,7 @@ TEST(SingleStream, EmptyTest) {
     std::ostringstream out;
     StreamMerger::merge(streams, out);
 
-    EXPECT_EQ(out.str(), correct_row);
+    EXPECT_EQ(out.str(), in_s_1);
 }
 
 TEST(SingleStream, OnlySpacesAndTabsTest) {
