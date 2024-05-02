@@ -4,7 +4,5 @@ project(darray C)
 set(CMAKE_C_STANDARD 11)
 add_compile_options(-Wall -Wextra -Wpedantic)
 
-add_executable(darray main.c
-        darray.c darray.h
-        temp.c
-        slist.h)
+add_executable(darray_run main.c
+        darray.c darray.h)

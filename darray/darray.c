@@ -9,6 +9,10 @@ typedef struct {
     void *items;
 } DynamicArray;
 
+static void *_get_item_ptr(DynamicArray *arr, size_t idx) {
+    return (char *) arr->items + idx * arr->itemSize;
+}
+
 void *darray_create(size_t itemSize) {
     DynamicArray *darray = malloc(sizeof(DynamicArray));
     if (darray == NULL) return NULL;
@@ -31,7 +35,7 @@ void darray_destroy(void *darray, void(*destroy)(void *)) {
     DynamicArray *arr = (DynamicArray *) darray;
     if (destroy != NULL) {
         for (size_t i = 0; i < arr->count; ++i) {
-            destroy((char *) arr->items + i * arr->itemSize);
+            destroy(_get_item_ptr(arr, i));
         }
     }
     free(arr->items);
@@ -42,15 +46,18 @@ void *darray_init(void *darray, size_t itemSize, void(*destroy)(void *)) {
     if (darray == NULL) return NULL;
 
     DynamicArray *arr = (DynamicArray *) darray;
+
     if (destroy != NULL) {
         for (size_t i = 0; i < arr->count; ++i) {
-            destroy((char *) arr->items + i * arr->itemSize);
+            destroy(_get_item_ptr(arr, i));
         }
     }
+
     arr->capacity = 10;
     arr->count = 0;
     arr->itemSize = itemSize;
     arr->items = realloc(arr->items, arr->capacity * itemSize);
+
     if (arr->items == NULL) {
         free(arr);
         return NULL;
@@ -65,7 +72,7 @@ void darray_clear(void *darray, void(*destroy)(void *)) {
     DynamicArray *arr = (DynamicArray *) darray;
     if (destroy != NULL) {
         for (size_t i = 0; i < arr->count; ++i) {
-            destroy((char *) arr->items + i * arr->itemSize);
+            destroy(_get_item_ptr(arr, i));
         }
     }
     arr->count = 0;
@@ -80,7 +87,7 @@ size_t darray_count(const void *darray) {
 void *darray_item(void *darray, size_t i) {
     if (darray == NULL || i >= darray_count(darray)) return NULL;
 
-    return (char *) ((DynamicArray *) darray)->items + i * ((DynamicArray *) darray)->itemSize;
+    return _get_item_ptr(darray, i);
 }
 
 void *darray_add(void *darray) {
@@ -93,7 +100,7 @@ void *darray_add(void *darray) {
         if (arr->items == NULL) return NULL;
     }
 
-    return (char *) arr->items + (arr->count++) * arr->itemSize;
+    return _get_item_ptr(arr, arr->count++);
 }
 
 void *darray_insert(void *darray, size_t i) {
@@ -111,7 +118,7 @@ void *darray_insert(void *darray, size_t i) {
             (arr->count - i) * arr->itemSize);
 
     arr->count++;
-    return (char *) arr->items + i * arr->itemSize;
+    return _get_item_ptr(arr, i);
 }
 
 void darray_remove(void *darray, size_t i, void(*destroy)(void *)) {
