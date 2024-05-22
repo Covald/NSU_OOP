@@ -96,6 +96,100 @@ TEST(Constructors, ConstructorStreamNoRepeat) {
     EXPECT_EQ(mp2, ht2.data());
 }
 
+
+TEST(Constructors, ConstructorStringNumbers) {
+    map<string, int> mp;
+    mp["1"] = 1;
+    mp["2"] = 2;
+    mp["3"] = 3;
+
+    string word = "1 2 2 3 3 3";
+
+    Histogram ht(word);
+    EXPECT_EQ(mp, ht.data());
+}
+
+
+TEST(Constructors, ConstructorVectorSpecialCharacters) {
+    map<string, int> mp;
+    mp["!"] = 1;
+    mp["@"] = 2;
+    mp["#"] = 3;
+
+    vector<string> v = {"!", "@", "@", "#", "#", "#"};
+
+    Histogram ht(v);
+    EXPECT_EQ(mp, ht.data());
+}
+
+
+TEST(Constructors, ConstructorVectorNumbers) {
+    map<string, int> mp;
+    mp["1"] = 1;
+    mp["2"] = 2;
+    mp["3"] = 3;
+
+    vector<string> v = {"1", "2", "2", "3", "3", "3"};
+
+    Histogram ht(v);
+    EXPECT_EQ(mp, ht.data());
+}
+
+// Testing the Histogram constructor with a stream containing special characters
+TEST(Constructors, ConstructorStreamSpecialCharacters) {
+    map<string, int> mp;
+    mp["!"] = 1;
+    mp["@"] = 2;
+    mp["#"] = 3;
+
+    istringstream iss("! @ @ # # #");
+
+    Histogram ht(iss);
+    EXPECT_EQ(mp, ht.data());
+}
+
+// Testing the Histogram constructor with a stream containing numbers
+TEST(Constructors, ConstructorStreamNumbers) {
+    map<string, int> mp;
+    mp["1"] = 1;
+    mp["2"] = 2;
+    mp["3"] = 3;
+
+    istringstream iss("1 2 2 3 3 3");
+
+    Histogram ht(iss);
+    EXPECT_EQ(mp, ht.data());
+}
+
+// Testing the minus operator with a non-empty result
+TEST(Operators, MinusNonEmptyHist) {
+    Histogram h1("a b c");
+    Histogram h2("a b");
+
+    Histogram h_ = h1 - h2;
+    map<string, int> mp;
+    mp["c"] = 1;
+
+    EXPECT_EQ(mp, h_.data());
+}
+
+// Testing the plus operator with a non-empty result
+TEST(Operators, PlusNonEmptyHist) {
+    Histogram h1("a b c");
+    Histogram h2("d e f");
+
+    Histogram h_ = h1 + h2;
+    map<string, int> mp;
+    mp["a"] = 1;
+    mp["b"] = 1;
+    mp["c"] = 1;
+    mp["d"] = 1;
+    mp["e"] = 1;
+    mp["f"] = 1;
+
+    EXPECT_EQ(mp, h_.data());
+}
+
 TEST(Operators, PlusNoRepeat) {
     string w1 = "1 2 3";
     Histogram ht1(w1);
