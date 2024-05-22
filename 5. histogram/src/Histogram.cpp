@@ -62,6 +62,10 @@ Histogram::iterator Histogram::begin() {
 }
 
 
+Histogram::iterator Histogram::end() {
+    return _map.end();
+}
+
 std::map<std::string, int>::const_iterator Histogram::cbegin() const {
     return _map.cbegin();
 }

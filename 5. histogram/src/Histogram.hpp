@@ -1,15 +1,12 @@
-#pragma once
-
 #include <iostream>
 #include <map>
 #include <sstream>
 #include <fstream>
 #include <vector>
 
-
-class Histogram final {
+class Histogram {
+private:
     std::map<std::string, int> _map;
-
 public:
 
     Histogram() = default;
@@ -23,7 +20,6 @@ public:
     Histogram(const Histogram &another) = default;
 
     ~Histogram() = default;
-
 
     Histogram &operator=(const Histogram &another) = default;
 
