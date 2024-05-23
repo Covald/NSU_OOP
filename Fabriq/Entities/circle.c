@@ -7,7 +7,11 @@
 #include "new.h"
 
 static void *Circle_ctor(void *_self, va_list *app) {
-    struct Circle *self = ((const class *) Point)->ctor(_self, app);
+    struct Circle *self = (struct Circle *) _self;
+    if (((const class *) Point)->ctor != NULL)
+        self = ((const class *) Point)->ctor(_self, app);
+
+    if (self == NULL) { return NULL; }
 
     self->rad = va_arg(*app, int);
 

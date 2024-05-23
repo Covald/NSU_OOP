@@ -4,9 +4,15 @@
 #include "stdio.h"
 #include "Point.h"
 #include "new.h"
+#include "stdarg.h"
 
 static void *Point_ctor(void *_self, va_list *app) {
-    struct Point *self = ((const class *) Shape)->ctor(_self, app);
+    struct Point *self = _self;
+    if (((const class *) Shape)->ctor != NULL) {
+        self = ((const class *) Shape)->ctor(_self, app);
+    }
+
+    if (self == NULL) { return NULL; }
 
     self->x = va_arg(*app, int);
     self->y = va_arg(*app, int);

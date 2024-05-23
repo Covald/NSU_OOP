@@ -10,7 +10,8 @@ add_executable(2D_scene main.c Entities/new.c Entities/new.h
         Entities/Point.h
         Fabriq.c
         Fabriq.h
-        utils/queue.c
+        utils/darray.h
+        utils/darray.c
         Entities/circle.c
         Entities/circle.h
         Entities/rectangle.c

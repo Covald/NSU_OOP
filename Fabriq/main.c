@@ -1,7 +1,11 @@
 #include <stdio.h>
 #include "Fabriq.h"
 #include "Entities/new.h"
-#include "utils/queue.h"
+#include "utils/darray.h"
+
+void destroy_prt(void *ptr) {
+    delete(*(void **) ptr);
+}
 
 int main(int argc, char *argv[]) {
     const char *file_name = NULL;
@@ -17,9 +21,9 @@ int main(int argc, char *argv[]) {
         printf("no figures\n");
         return -1;
     }
-    for (size_t i = 0; i < queue_count(shapes); ++i)
-        draw(queue_get(shapes, i));
-
-    queue_destroy(shapes, delete);
+    for (size_t i = darray_first(shapes); i != darray_stop(shapes); i = darray_next(shapes, i)) {
+        draw(*(void **) darray_current(shapes, i));
+    }
+    darray_destroy(shapes, destroy_prt);
     return 0;
 }

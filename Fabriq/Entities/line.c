@@ -6,8 +6,11 @@
 #include "new.h"
 
 static void *Line_ctor(void *_self, va_list *app) {
-    struct Line *self = ((const class *) Shape)->ctor(_self, app);
-
+    struct Line *self = _self;
+    if (((const class *) Shape)->ctor != NULL) {
+        self = ((const class *) Shape)->ctor(_self, app);
+    }
+    if (self == NULL) { return NULL; }
     self->x_1 = va_arg(*app, int);
     self->y_1 = va_arg(*app, int);
     self->x_2 = va_arg(*app, int);

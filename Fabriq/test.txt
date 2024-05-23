@@ -1,4 +1,17 @@
-point 1 2
-circle 10 10 5
-rect 1 2 3 4
+circle 10 5 3
+
+point
+
+point 1
+
+point 1 2 34
+
+point 1 a
+
+circle 10 10 5 23
+
+rect 1 2 3 4 sdf
+
+rect 1 2 3 4 5
+
 line 10 10 20
