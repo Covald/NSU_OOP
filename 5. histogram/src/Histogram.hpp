@@ -6,14 +6,10 @@
 
 class Histogram {
 private:
-    std::map<std::string, int> _map;
+    std::map<std::string, size_t> _map;
 public:
 
     Histogram() = default;
-
-    explicit Histogram(const std::string &str);
-
-    explicit Histogram(std::istream &is);
 
     explicit Histogram(const std::vector<std::string> &v);
 
@@ -29,10 +25,10 @@ public:
 
     bool operator==(const Histogram &another) const;
 
-    const std::map<std::string, int> &data() const;
+    std::map<std::string, size_t> data() const;
 
-    using iterator = std::map<std::string, int>::iterator;
-    using const_iterator = std::map<std::string, int>::const_iterator;
+    using iterator = std::map<std::string, size_t>::iterator;
+    using const_iterator = std::map<std::string, size_t>::const_iterator;
 
     iterator begin();
 
