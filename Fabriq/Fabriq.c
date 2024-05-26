@@ -22,13 +22,14 @@ static void *parse_line(char *str) {
 
     int x1, y1, x2, y2;
 
-    size_t n = sscanf(str, "%s %d %d %d %d %s", objName, &x1, &y1, &x2, &y2, tmp);
+    int n = sscanf(str, "%s %d %d %d %d %s", objName, &x1, &y1, &x2, &y2, tmp);
 
     objName[BUFF_SIZE - 1] = '\0';
 
-    if (n == 0) return NULL;
-    else if (n >= 6 || *tmp != '\0') {
-        printf("Incorrect param count in str: %s\n", str);
+    if (n <= 0) return NULL;
+
+    if (n >= 6 || *tmp != '\0') {
+        printf("Incorrect param count in str(cnt params - %d): %s\n", n-1, str);
         return NULL;
     } else if (!strcmp(objName, "point") && n == 3) {
         return new(Point, x1, y1);
@@ -39,31 +40,36 @@ static void *parse_line(char *str) {
     } else if (!strcmp(objName, "line") && n == 5) {
         return new(Line, x1, y1, x2, y2);
     } else {
-        printf("Incorrect param count in str: %s\n", str);
+        printf("Incorrect param count in str(cnt params - %d): %s\n", n-1, str);
         return NULL;
     }
 }
 
-void *parse_file(char *filename) {
+static inline void destroy_prt(void *ptr) {
+    delete(*(void **) ptr);
+}
 
-    FILE *fp = fopen(filename, "r");
-    if (!fp) { return NULL; }
+void *parse_file(FILE *fp) {
+    void *shapes = darray_create(sizeof(void *));
 
-    void *queue = darray_create(sizeof(void *));
+    if (shapes == NULL) {
+        darray_destroy(shapes, destroy_prt);
+        printf("Can't allocate memory for array of shapes.");
+        return NULL;
+    }
 
     char str[BUFF_SIZE];
     while (fgets(str, BUFF_SIZE, fp)) {
         void *shape = parse_line(str);
         if (!shape) { continue; }
-        void **tmp = (void **) darray_add(queue);
+        void **tmp = (void **) darray_add(shapes);
         if (tmp == NULL) {
             delete(shape);
-            printf("Can't get memmory for next item.\n");
+            printf("Can't get memory for next item.\n");
             break;
         }
         *tmp = shape;
     }
 
-    fclose(fp);
-    return queue;
+    return shapes;
 }

@@ -7,6 +7,6 @@
 
 #include "Entities/Shape.h"
 
-void *parse_file(char *filename);
+void *parse_file(FILE *fp);
 
 #endif //INC_2D_SCENE_FABRIQ_H
