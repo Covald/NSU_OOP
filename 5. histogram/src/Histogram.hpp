@@ -1,3 +1,6 @@
+#ifndef HISTOGRAM_H
+#define HISTOGRAM_H
+
 #include <iostream>
 #include <map>
 #include <sstream>
@@ -6,9 +9,8 @@
 
 class Histogram {
 private:
-    std::map<std::string, size_t> _map;
+    std::map<std::string, int> _map;
 public:
-
     Histogram() = default;
 
     explicit Histogram(const std::vector<std::string> &v);
@@ -25,16 +27,15 @@ public:
 
     bool operator==(const Histogram &another) const;
 
-    std::map<std::string, size_t> data() const;
+    bool operator!=(const Histogram &another) const;
 
-    using iterator = std::map<std::string, size_t>::iterator;
-    using const_iterator = std::map<std::string, size_t>::const_iterator;
+    const std::map<std::string, int> &data() const;
 
-    iterator begin();
+    using const_iterator = std::map<std::string, int>::const_iterator;
 
-    iterator end();
+    const_iterator begin() const;
 
-    const_iterator cbegin() const;
-
-    const_iterator cend() const;
+    const_iterator end() const;
 };
+
+#endif //HISTOGRAM_H

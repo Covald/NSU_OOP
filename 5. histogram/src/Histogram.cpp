@@ -32,26 +32,21 @@ bool Histogram::operator==(const Histogram &another) const {
     return _map == another._map;
 }
 
-std::map<std::string, size_t> Histogram::data() const {
+bool Histogram::operator!=(const Histogram &another) const {
+    return _map != another._map;
+}
+
+const std::map<std::string, int> &Histogram::data() const {
     return _map;
 }
 
-
-Histogram::iterator Histogram::begin() {
+std::map<std::string, int>::const_iterator Histogram::begin() const {
     return _map.begin();
 }
 
-
-Histogram::iterator Histogram::end() {
+std::map<std::string, int>::const_iterator Histogram::end() const {
     return _map.end();
 }
 
-std::map<std::string, size_t>::const_iterator Histogram::cbegin() const {
-    return _map.cbegin();
-}
-
-std::map<std::string, size_t>::const_iterator Histogram::cend() const {
-    return _map.cend();
-}
 
 

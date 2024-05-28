@@ -1,6 +1,8 @@
 #include <iostream>
 #include <sstream>
 #include "Histogram.hpp"
+#include "Parser.h"
+#include "Exporter.h"
 
 int main(int argc, char *argv[]) {
     if (argc != 3) {
@@ -16,14 +18,10 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    std::vector<std::string> words;
-    std::string word;
-    while (input >> word) {
-        words.push_back(word);
-    }
-    Histogram ht(words);
-    for (const auto &elem: ht.data()) {
-        output << elem.first << ": " << std::string((unsigned long)elem.second, '#') << std::endl;
-    }
+    Parser parser(input);
+    Histogram ht(parser.parse());
+    Exporter exporter(output);
+    exporter.export_histogram(ht);
+
     return 0;
 }
