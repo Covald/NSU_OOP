@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
     fclose(input_file);
 
     if (shapes == NULL) {
-        darray_destroy(shapes, destroy_prt);
+        printf("Can't allocate memory for array of shapes.");
         return -1;
     }
 
